@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cargar Archivo</title>
+</head>
+<body>
+
+<input type="file" id="fileInput">
+<div id="fileInfo"></div>
+
+<script>
+document.getElementById('fileInput').addEventListener('change', function(event) {
+  const file = event.target.files[0];
+  
+  if (file) {
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      const content = e.target.result;
+      console.log('Contenido del archivo:', content);
+      // Aquí puedes hacer lo que quieras con el contenido del archivo
+      
+      // Guardar la ruta del archivo en una cookie
+      document.cookie = `archivo=${encodeURIComponent(file.name)}`;
+      
+      // Mostrar información del archivo en la página
+      mostrarArchivoInfo(file.name, event.target.value); // Pasamos el nombre y la ruta del archivo
+    };
+    
+    reader.readAsText(file);
+  } else {
+    console.error('No se seleccionó ningún archivo.');
+  }
+});
+
+// Función para leer la cookie y mostrar el nombre del archivo
+function mostrarArchivoGuardado() {
+    console.log('Cookies:', document.cookie);
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split('=');
+    if (name === 'archivo') {
+      const fileName = decodeURIComponent(value);
+      console.log('Nombre del archivo guardado:', fileName);
+      // Mostrar información del archivo en la página
+      mostrarArchivoInfo(fileName, ''); // Pasamos el nombre del archivo y una cadena vacía para la ruta
+      break;
+    }
+  }
+}
+
+// Función para mostrar información del archivo en la página
+function mostrarArchivoInfo(nombreArchivo, rutaArchivo) {
+  const fileInfoDiv = document.getElementById('fileInfo');
+  fileInfoDiv.innerHTML = `<p>Nombre del archivo: ${nombreArchivo}</p><p>Ruta del archivo: ${rutaArchivo}</p>`;
+}
+
+// Llamar a la función al cargar la página para mostrar el nombre del archivo guardado
+window.onload = (event) => {
+  mostrarArchivoGuardado();
+};
+
+</script>
+
+</body>
+</html>
