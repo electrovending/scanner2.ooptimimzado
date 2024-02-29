@@ -63,10 +63,10 @@ const signals = (kline, symbol, emaDist) => {
   const rsi = RSI(ordered.map(entry => entry.open), 14);
   console.log('calculating.......');
   // set conditional for rsi crossing down below 85
-  if (rsi[0] < rsi[1] && rsi[1] > 85 && emaDist > 2 ) {
+  if (rsi[0] < rsi[1] && rsi[1] > 80 && emaDist > 3 ) {
     notifyMe(symbol, 'SHORT ⛔');
     console.log(symbol, emaDist);
-  } else if (rsi[0] > rsi[1] && rsi[1] < 15 && emaDist < -2) {
+  } else if (rsi[0] > rsi[1] && rsi[1] < 15 && emaDist < -3) {
     notifyMe(symbol, 'LONG 🟢');
     console.log(symbol, emaDist);
   }
